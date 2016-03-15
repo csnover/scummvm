@@ -29,6 +29,9 @@
 #include "sci/graphics/picture.h"
 #include "sci/graphics/text32.h"
 #include "sci/graphics/view.h"
+#ifdef USE_SCALERS
+#include "graphics/scaler.h"
+#endif
 
 namespace Sci {
 #pragma mark CelScaler
@@ -192,16 +195,19 @@ struct SCALER_Scale {
 			int lastIndex = celObj._width - 1;
 			for (int16 x = targetRect.left; x < targetRect.right; ++x) {
 				_valuesX[x] = lastIndex - (table->valuesX[x] - unscaledX);
+				assert(_valuesX[x] >= 0 && _valuesX[x] < targetRect.right);
 			}
 		} else {
 			for (int16 x = targetRect.left; x < targetRect.right; ++x) {
 				_valuesX[x] = table->valuesX[x] - unscaledX;
+				assert(_valuesX[x] >= 0 && _valuesX[x] < targetRect.right);
 			}
 		}
 
 		const int16 unscaledY = (scaledPosition.y / scaleY).toInt();
 		for (int16 y = targetRect.top; y < targetRect.bottom; ++y) {
 			_valuesY[y] = table->valuesY[y] - unscaledY;
+			assert(_valuesY[y] >= 0 && _valuesY[y] < targetRect.bottom);
 		}
 	}
 
@@ -650,9 +656,12 @@ struct RENDERER {
 	}
 };
 
+#ifdef USE_SCALERS
+static byte scalerBuffer[640 * 480];
+#endif
+
 template<typename MAPPER, typename SCALER>
 void CelObj::render(Buffer &target, const Common::Rect &targetRect, const Common::Point &scaledPosition) const {
-
 	MAPPER mapper;
 	SCALER scaler(*this, targetRect.left - scaledPosition.x + targetRect.width(), scaledPosition);
 	RENDERER<MAPPER, SCALER> renderer(mapper, scaler, _transparentColor);
@@ -661,11 +670,38 @@ void CelObj::render(Buffer &target, const Common::Rect &targetRect, const Common
 
 template<typename MAPPER, typename SCALER>
 void CelObj::render(Buffer &target, const Common::Rect &targetRect, const Common::Point &scaledPosition, const Ratio &scaleX, const Ratio &scaleY) const {
+	Buffer firstPassTarget = target;
+	Ratio firstPassScaleX = scaleX;
+	Ratio firstPassScaleY = scaleY;
+	Common::Rect firstPassRect = targetRect;
+	Common::Point firstPassPosition = scaledPosition;
+
+#ifdef USE_SCALERS
+	// This is normally just going to scale from 320x200 to 320x240
+	const bool useAdvScaler = g_sci->_gfxFrameout->getCurrentBuffer().screenWidth > 320 && _scaledWidth <= 320;
+	if (useAdvScaler) {
+		firstPassTarget = Buffer(640, 480, scalerBuffer);
+		firstPassScaleX /= 2;
+		firstPassScaleY /= 2;
+		firstPassRect.left /= 2;
+		firstPassRect.top /= 2;
+		firstPassRect.right = firstPassRect.right / 2 - 2;
+		firstPassRect.bottom = firstPassRect.bottom / 2 - 2;
+		firstPassPosition.x /= 2;
+		firstPassPosition.y /= 2;
+	}
+#endif
 
 	MAPPER mapper;
-	SCALER scaler(*this, targetRect, scaledPosition, scaleX, scaleY);
+	SCALER scaler(*this, firstPassRect, firstPassPosition, firstPassScaleX, firstPassScaleY);
 	RENDERER<MAPPER, SCALER> renderer(mapper, scaler, _transparentColor);
-	renderer.draw(target, targetRect, scaledPosition);
+	renderer.draw(firstPassTarget, firstPassRect, firstPassPosition);
+
+#ifdef USE_SCALERS
+	if (useAdvScaler) {
+		AdvMame2x((byte *)firstPassTarget.getPixels() + firstPassRect.top * firstPassTarget.pitch + firstPassRect.left, firstPassTarget.pitch, (byte *)target.getPixels() + targetRect.top * target.pitch + targetRect.left, target.pitch, firstPassRect.width(), firstPassRect.height());
+	}
+#endif
 }
 
 void dummyFill(Buffer &target, const Common::Rect &targetRect) {
