@@ -25,10 +25,6 @@
 #include "common/translation.h"
 #include <SDL_keyboard.h>
 
-#ifdef _WIN32_WCE
-#include "CEDevice.h"
-#endif
-
 namespace GUI {
 
 enum {

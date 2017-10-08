@@ -36,13 +36,7 @@
 class Win32Plugin : public DynamicPlugin {
 private:
 	static const TCHAR* toUnicode(const char *x) {
-	#ifndef _WIN32_WCE
 		return (const TCHAR *)x;
-	#else
-		static TCHAR unicodeString[MAX_PATH];
-		MultiByteToWideChar(CP_ACP, 0, x, strlen(x) + 1, unicodeString, sizeof(unicodeString) / sizeof(TCHAR));
-		return unicodeString;
-	#endif
 	}
 
 
@@ -50,11 +44,7 @@ protected:
 	void *_dlHandle;
 
 	virtual VoidFunc findSymbol(const char *symbol) {
-		#ifndef _WIN32_WCE
 		FARPROC func = GetProcAddress((HMODULE)_dlHandle, symbol);
-		#else
-		FARPROC func = GetProcAddress((HMODULE)_dlHandle, toUnicode(symbol));
-		#endif
 		if (!func)
 			debug("Failed loading symbol '%s' from plugin '%s'", symbol, _filename.c_str());
 
@@ -67,11 +57,7 @@ public:
 
 	bool loadPlugin() {
 		assert(!_dlHandle);
-#ifndef _WIN32_WCE
 		_dlHandle = LoadLibrary(_filename.c_str());
-#else
-		_dlHandle = LoadLibrary(toUnicode(_filename.c_str()));
-#endif
 
 		if (!_dlHandle) {
 			debug("Failed loading plugin '%s' (error code %d)", _filename.c_str(), (int32) GetLastError());
@@ -103,11 +89,7 @@ Plugin* Win32PluginProvider::createPlugin(const Common::FSNode &node) const {
 bool Win32PluginProvider::isPluginFilename(const Common::FSNode &node) const {
 	// Check the plugin suffix
 	Common::String filename = node.getName();
-#ifndef _WIN32_WCE
 	if (!filename.hasSuffix(".dll"))
-#else
-	if (!filename.hasSuffix(".plugin"))
-#endif
 		return false;
 
 	return true;

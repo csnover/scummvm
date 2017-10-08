@@ -31,9 +31,6 @@
 #include <windows.h>
 // winnt.h defines ARRAYSIZE, but we want our own one...
 #undef ARRAYSIZE
-#ifdef _WIN32_WCE
-#undef GetCurrentDirectory
-#endif
 #include <io.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,7 +54,6 @@ public:
 	 * Creates a WindowsFilesystemNode with the root node as path.
 	 *
 	 * In regular windows systems, a virtual root path is used "".
-	 * In windows CE, the "\" root is used instead.
 	 */
 	WindowsFilesystemNode();
 

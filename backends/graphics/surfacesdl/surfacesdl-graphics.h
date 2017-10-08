@@ -48,7 +48,7 @@
 #define USE_SDL_RESIZABLE_WINDOW
 #endif
 
-#if !defined(_WIN32_WCE) && !defined(__SYMBIAN32__)
+#if !defined(__SYMBIAN32__)
 // Uncomment this to enable the 'on screen display' code.
 #define USE_OSD	1
 #endif

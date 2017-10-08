@@ -22,7 +22,7 @@
 
 #define FORBIDDEN_SYMBOL_EXCEPTION_getcwd
 
-#if defined(WIN32) && !defined(_WIN32_WCE) && !defined(__SYMBIAN32__)
+#if defined(WIN32) && !defined(__SYMBIAN32__)
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <direct.h>
@@ -63,10 +63,6 @@
 #include "graphics/pixelformat.h"
 #include "image/bmp.h"
 
-#ifdef _WIN32_WCE
-extern bool isSmartphone();
-#endif
-
 // FIXME: HACK for error()
 Engine *g_engine = 0;
 
@@ -85,10 +81,6 @@ static void defaultErrorHandler(const char *msg) {
 	// now invoke the debugger, if available / supported.
 	if (g_engine) {
 		GUI::Debugger *debugger = g_engine->getDebugger();
-#ifdef _WIN32_WCE
-		if (isSmartphone())
-			debugger = 0;
-#endif
 
 #if defined(USE_TASKBAR)
 		g_system->getTaskbarManager()->notifyError();
@@ -389,7 +381,7 @@ void GUIErrorMessage(const Common::String &msg) {
 }
 
 void Engine::checkCD() {
-#if defined(WIN32) && !defined(_WIN32_WCE) && !defined(__SYMBIAN32__)
+#if defined(WIN32) && !defined(__SYMBIAN32__)
 	// It is a known bug under Windows that games that play CD audio cause
 	// ScummVM to crash if the data files are read from the same CD. Check
 	// if this appears to be the case and issue a warning.

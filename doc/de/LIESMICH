@@ -1316,7 +1316,7 @@ Die unterstützten Plattformen beinhalten (aber beschränken sich nicht auf):
 
         UNIX            (Linux, Solaris, IRIX, *BSD, ...)
         Windows
-        Windows CE und Windows Mobile (einschließlich Smartphones und PocketPCs)
+        Windows Mobile (einschließlich Smartphones und PocketPCs)
         Mac OS X
         AmigaOS
         Android
@@ -2871,9 +2871,6 @@ Debug-Nachrichten zu durchsuchen
    * Visual Studio (MSVC)
       Weiterführende Informationen finden Sie unter:
       http://wiki.scummvm.org/index.php/Compiling_ScummVM/Visual_Studio
-   * Windows CE/Mobile
-      Weiterführende Informationen finden Sie unter:
-      http://wiki.scummvm.org/index.php/Compiling_ScummVM/Windows_CE
 
    Linux:
    * GCC

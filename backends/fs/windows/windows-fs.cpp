@@ -108,18 +108,10 @@ const TCHAR* WindowsFilesystemNode::toUnicode(const char *str) {
 
 WindowsFilesystemNode::WindowsFilesystemNode() {
 	_isDirectory = true;
-#ifndef _WIN32_WCE
 	// Create a virtual root directory for standard Windows system
 	_isValid = false;
 	_path = "";
 	_isPseudoRoot = true;
-#else
-	_displayName = "Root";
-	// No need to create a pseudo root directory on Windows CE
-	_isValid = true;
-	_path = "\\";
-	_isPseudoRoot = false;
-#endif
 }
 
 WindowsFilesystemNode::WindowsFilesystemNode(const Common::String &p, const bool currentDir) {
@@ -169,7 +161,6 @@ bool WindowsFilesystemNode::getChildren(AbstractFSList &myList, ListMode mode, b
 	assert(_isDirectory);
 
 	if (_isPseudoRoot) {
-#ifndef _WIN32_WCE
 		// Drives enumeration
 		TCHAR drive_buffer[100];
 		GetLogicalDriveStrings(sizeof(drive_buffer) / sizeof(TCHAR), drive_buffer);
@@ -188,7 +179,6 @@ bool WindowsFilesystemNode::getChildren(AbstractFSList &myList, ListMode mode, b
 				entry._path = toAscii(current_drive);
 				myList.push_back(new WindowsFilesystemNode(entry));
 		}
-#endif
 	}
 	else {
 		// Files enumeration

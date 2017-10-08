@@ -35,10 +35,6 @@
 	#define GCC_ATLEAST(major, minor) 0
 #endif
 
-#if defined(_WIN32_WCE) && _WIN32_WCE < 300
-	#define NONSTANDARD_PORT
-#endif
-
 #if defined(NONSTANDARD_PORT)
 
 	// Ports which need to perform #includes and #defines visible in
@@ -89,8 +85,6 @@
 		}
 		#endif
 
-		#if !defined(_WIN32_WCE)
-
 		#define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 		#define NOGDICAPMASKS
 		#define OEMRESOURCE
@@ -114,8 +108,6 @@
 		#define NOWH
 		#define NOSOUND
 		#define NODRAWTEXT
-
-		#endif
 
 		#if defined(ARRAYSIZE)
 		// VS2005beta2 introduces new stuff in winnt.h
@@ -279,7 +271,7 @@
 		#define SCUMM_LITTLE_ENDIAN
 		#define SCUMM_NEED_ALIGNMENT
 
-	#elif defined(_WIN32_WCE) || defined(_MSC_VER) || defined(__MINGW32__)
+	#elif defined(_MSC_VER) || defined(__MINGW32__)
 
 		#define SCUMM_LITTLE_ENDIAN
 
@@ -381,7 +373,7 @@
 #endif
 
 #ifndef PLUGIN_EXPORT
-	#if defined(_MSC_VER) || defined(_WIN32_WCE) || defined(__MINGW32__)
+	#if defined(_MSC_VER) || defined(__MINGW32__)
 		#define PLUGIN_EXPORT __declspec(dllexport)
 	#else
 		#define PLUGIN_EXPORT

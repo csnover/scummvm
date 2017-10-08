@@ -24,7 +24,7 @@
 
 #include "backends/saves/windows/windows-saves.h"
 
-#if defined(WIN32) && !defined(_WIN32_WCE) && !defined(DISABLE_DEFAULT_SAVEFILEMANAGER)
+#if defined(WIN32) && !defined(DISABLE_DEFAULT_SAVEFILEMANAGER)
 
 #if defined(ARRAYSIZE)
 #undef ARRAYSIZE

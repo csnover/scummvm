@@ -619,7 +619,7 @@ Stödda plattformar inkluderar bl.a. följande:
 
         UNIX            (Linux, Solaris, IRIX, *BSD, ...)
         Windows
-        Windows CE och Windows Mobile  (inklusive Smartphones och PocketPCs)
+        Windows Mobile  (inklusive Smartphones och PocketPCs)
         Mac OS X
         AmigaOS
         Android
@@ -1021,8 +1021,6 @@ ScummVM stöder ett antal kortkommandon medan du spelar. De är olika för SCUMM
                              “Tal och undertexter” och ”Endast undertexter”
 
 Märk att trycka Ctrl-f och Ctrl-g inte rekommenderas: spel kan krasha när de spelas snabbare än normalt, då koden kan desynkroniseras.
-
-Notis för WinCE-användare: På grund av de begränsade tangentborden på de flesta enheter stöds ett litet antal av de här tangenterna via tangentinställning och/eller kontrollpanelen. Var god se READ-WinCE.txt filen.
 
 
 6.0) Spardata:
@@ -1746,10 +1744,6 @@ På Win9x/NT/XP kan du definiera USE_WINDBG och lägga till WinDbg för att visa
     * Programmet borde nu kompileras utan problem.
     * För mer information se:
       http://wiki.scummvm.org/index.php/Compiling_ScummVM/VS2005
-
-  Windows Mobile:
-    * Var god se:
-      http://wiki.scummvm.org/index.php/Compiling_ScummVM/Windows_CE
 
   Mac OS X:
     * Se till att du har utvecklingsverktygen istallerade.

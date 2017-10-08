@@ -890,7 +890,7 @@ begin_credits("Credits");
 
 			begin_section("PocketPC / WinCE");
 				add_person("Nicolas Bacca", "arisme", "(retired)");
-				add_person("Ismail Khatib", "CeRiAl", "");
+				add_person("Ismail Khatib", "CeRiAl", "(retired)");
 				add_person("Kostas Nakos", "Jubanka", "(retired)");
 			end_section();
 

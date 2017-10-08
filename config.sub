@@ -817,10 +817,6 @@ case $basic_machine in
 		basic_machine=i686-pc
 		os=-mingw32
 		;;
-	mingw32ce)
-		basic_machine=arm-unknown
-		os=-mingw32ce
-		;;
 	miniframe)
 		basic_machine=m68000-convergent
 		;;
@@ -1440,9 +1436,6 @@ case $os in
 		;;
 	-os400*)
 		os=-os400
-		;;
-	-wince*)
-		os=-wince
 		;;
 	-osfrose*)
 		os=-osfrose

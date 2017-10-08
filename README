@@ -1349,7 +1349,6 @@ Supported platforms include (but are not limited to):
 
         UNIX            (Linux, Solaris, IRIX, *BSD, ...)
         Windows
-        Windows CE
         Windows Mobile  (including Smartphones and PocketPCs)
         Mac OS X
         AmigaOS
@@ -1798,10 +1797,6 @@ other games.
 Note that using Ctrl-f or Ctrl-g is not recommended: games can crash
 when being run faster than their normal speed, as scripts will lose
 synchronisation.
-
-Note for WinCE users: Due to the limited keyboard input in most devices,
-a small subset of these hot keys are supported via key remapping and/or
-panel actions. Please consult the README-WinCE.txt file.
 
 
 5.5) Language options:

@@ -409,30 +409,14 @@ void OSystem_SDL::logMessage(LogMessageType::Type type, const char *message) {
 	if (_logger)
 		_logger->print(message);
 
-	// Finally, some Windows / WinCE specific logging code.
-#if defined( USE_WINDBG )
-#if defined( _WIN32_WCE )
-	TCHAR buf_unicode[1024];
-	MultiByteToWideChar(CP_ACP, 0, message, strlen(message) + 1, buf_unicode, sizeof(buf_unicode));
-	OutputDebugString(buf_unicode);
-
-	if (type == LogMessageType::kError) {
-#ifndef DEBUG
-		drawError(message);
-#else
-		int cmon_break_into_the_debugger_if_you_please = *(int *)(message + 1);	// bus error
-		printf("%d", cmon_break_into_the_debugger_if_you_please);			// don't optimize the int out
-#endif
-	}
-
-#else
+	// Finally, some Windows specific logging code.
+#ifdef USE_WINDBG
 	OutputDebugString(message);
-#endif
 #endif
 }
 
 Common::String OSystem_SDL::getSystemLanguage() const {
-#if defined(USE_DETECTLANG) && !defined(_WIN32_WCE)
+#ifdef USE_DETECTLANG
 #ifdef WIN32
 	// We can not use "setlocale" (at least not for MSVC builds), since it
 	// will return locales like: "English_USA.1252", thus we need a special
