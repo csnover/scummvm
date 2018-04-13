@@ -1358,9 +1358,9 @@ void Sci1SoundManager::advancePlayback(Sci1Sound &sound, uint8 playlistIndex) {
 
 void Sci1SoundManager::parseCommand(Sci1Sound &sound, const uint8 playlistIndex, const uint8 trackNo, Sci1Sound::Track &track) {
 	// parseCommand
-	byte message; // dl
+	byte rest; // dl
 	do {
-		message = sound.peek(trackNo);
+		byte message = sound.peek(trackNo); // dl
 		if (message & kStatusByteFlag) {
 			track.command = message;
 			sound.advance(trackNo);
@@ -1444,12 +1444,12 @@ void Sci1SoundManager::parseCommand(Sci1Sound &sound, const uint8 playlistIndex,
 				return;
 			}
 		}
-	} while ((message = sound.consume(trackNo)) == 0);
+	} while ((rest = sound.consume(trackNo)) == 0);
 
-	if (message == kFixedRest) {
+	if (rest == kFixedRest) {
 		track.rest = kFixedRestValue;
 	} else {
-		track.rest = message;
+		track.rest = rest;
 	}
 	--track.rest;
 }
